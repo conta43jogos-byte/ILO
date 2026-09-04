@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coração para Andressa</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="coracaoCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById("coracaoCanvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function desenhar() {
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const largura = canvas.width;
+            const altura = canvas.height;
+            const escala = Math.min(largura, altura) / 35;
+
+            const cx = largura / 2;
+            const cy = altura / 2 + 10;
+
+            let step = 0.1;
+            for (let k = 0; k < Math.PI * 2; k += step) {
+                let x = 16 * Math.pow(Math.sin(k), 3);
+                let y = -(13 * Math.cos(k) - 5 * Math.cos(2 * k) - 2 * Math.cos(3 * k) - Math.cos(4 * k));
+
+                let posX = cx + x * escala;
+                let posY = cy + y * escala;
+
+                let r = Math.floor(120 + Math.random() * 100);
+                let g = Math.floor(20 + Math.random() * 40);
+                let b = Math.floor(180 + Math.random() * 75);
+
+                ctx.save();
+                ctx.translate(posX, posY);
+
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = `rgb(${r}, ${g}, ${b})`;
+
+                ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                ctx.font = "bold 12px Consolas, monospace";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText("Love you", 0, 0);
+                ctx.restore();
+            }
+
+            ctx.save();
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = "white";
+            ctx.fillStyle = "white";
+            ctx.font = "bold 26px Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            
+            let texto = "Te amo\nAndressa!";
+            let linhas = texto.split("\n");
+            for (let i = 0; i < linhas.length; i++) {
+                ctx.fillText(linhas[i], cx, cy + (i * 32) - 15);
+            }
+            ctx.restore();
+        }
+
+        desenhar();
+
+        window.addEventListener("resize", () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            desenhar();
+        });
+    </script>
+</body>
+</html>
